@@ -1,3 +1,6 @@
+from collections import Counter
+
+
 class InventoryControl:
     INGREDIENTS = {
         'hamburguer': ['pao', 'carne', 'queijo'],
@@ -16,10 +19,29 @@ class InventoryControl:
     }
 
     def __init__(self):
-        pass
+        self._data = list()
+        self._inventory = {
+            'pao': 0,
+            'carne': 0,
+            'queijo': 0,
+            'molho': 0,
+            'presunto': 0,
+            'massa': 0,
+            'frango': 0,
+        }
 
     def add_new_order(self, customer, order, day):
-        pass
+        self._data.append({"customer": customer, "order": order, "day": day})
 
     def get_quantities_to_buy(self):
-        pass
+        items = list()
+        for order in self._data:
+            items.append(order["order"])
+        personal = (Counter(items).most_common())
+        for p_order in personal:
+            for ingredient in self.INGREDIENTS:
+                if p_order[0] == ingredient:
+                    for item in self.INGREDIENTS[ingredient]:
+                        self._inventory.update({ item: p_order[1] })
+
+        return self._inventory
