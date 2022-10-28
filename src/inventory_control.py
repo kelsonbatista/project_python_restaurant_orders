@@ -39,9 +39,7 @@ class InventoryControl:
             items.append(order["order"])
         personal = (Counter(items).most_common())
         for p_order in personal:
-            for ingredient in self.INGREDIENTS:
-                if p_order[0] == ingredient:
-                    for item in self.INGREDIENTS[ingredient]:
-                        self._inventory.update({ item: p_order[1] })
+            for ingredient in self.INGREDIENTS[p_order[0]]:
+                self._inventory.update({ingredient: p_order[1]})
 
         return self._inventory
