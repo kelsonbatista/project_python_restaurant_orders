@@ -9,15 +9,12 @@ def analyze_log(path_to_file):
             with open(path_to_file, "r") as file:
                 keys = ["name", "order", "weekday"]
                 *orders, = csv.DictReader(file, fieldnames=keys)
-            
             res1 = most_ordered(orders, 'Maria')[0][0]
             res2 = most_ordered_qty(orders, 'arnaldo', 'hamburguer')
             res3 = never_ordered(orders, 'joao')
             res4 = never_go(orders, 'joao')
-
             with open("data/mkt_campaign.txt", "w") as file:
                 file.write(f"{res1}\n{res2}\n{res3}\n{res4}")
-
         except FileNotFoundError:
             raise FileNotFoundError(f"Arquivo inexistente: '{path_to_file}'")
     else:
@@ -52,7 +49,9 @@ def never_ordered(orders, name):
 
 
 def never_go(orders, name):
-    personal_weekday = [order["weekday"] for order in orders if order["name"] == name.lower()]
+    personal_weekday = [order["weekday"]
+                        for order in orders
+                        if order["name"] == name.lower()]
     personal = Counter(personal_weekday).most_common()
     personal_set = [item[0] for item in personal]
     orders_order = [order["weekday"] for order in orders]
