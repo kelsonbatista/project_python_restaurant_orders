@@ -32,6 +32,14 @@ class InventoryControl:
 
     def add_new_order(self, customer, order, day):
         self._data.append({"customer": customer, "order": order, "day": day})
+        items = list()
+        for item in self._data:
+            items.append(item["order"])
+        orders = (Counter(items).most_common())
+        for item in orders:
+            for ingredient in self.INGREDIENTS[item[0]]:
+                if ingredient != order:
+                    return False
 
     def get_quantities_to_buy(self):
         items = list()
@@ -43,3 +51,7 @@ class InventoryControl:
                 new_value = self._inventory[ingredient]
                 self._inventory.update({ingredient: p_order[1] + new_value})
         return self._inventory
+
+    def get_available_dishes(self):
+        diff = self.MINIMUM_INVENTORY - self._inventory
+        print(diff)
