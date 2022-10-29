@@ -32,20 +32,14 @@ class InventoryControl:
 
     def add_new_order(self, customer, order, day):
         self._data.append({"customer": customer, "order": order, "day": day})
-        items = list()
-        for item in self._data:
-            items.append(item["order"])
-        orders = (Counter(items).most_common())
+        orders = self.get_orders()
         for item in orders:
             for ingredient in self.INGREDIENTS[item[0]]:
                 if ingredient != order:
                     return False
 
     def get_quantities_to_buy(self):
-        items = list()
-        for order in self._data:
-            items.append(order["order"])
-        personal = (Counter(items).most_common())
+        personal = self.get_orders()
         for p_order in personal:
             for ingredient in self.INGREDIENTS[p_order[0]]:
                 new_value = self._inventory[ingredient]
