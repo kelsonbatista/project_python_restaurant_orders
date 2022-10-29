@@ -53,5 +53,19 @@ class InventoryControl:
         return self._inventory
 
     def get_available_dishes(self):
-        diff = self.MINIMUM_INVENTORY - self._inventory
-        print(diff)
+        dishes = set(self.INGREDIENTS.keys())
+        orders = self.get_orders()
+        orders_ingredients = self.INGREDIENTS[orders[0][0]]
+        for dish, ingredients in self.INGREDIENTS.items():
+            for ingredient in ingredients:
+                if (self.MINIMUM_INVENTORY[ingredient] - orders[0][1]) <= 0 \
+                        and ingredient in orders_ingredients \
+                        and dish in dishes:
+                    dishes.remove(dish)
+        return dishes
+
+    def get_orders(self):
+        items = list()
+        for item in self._data:
+            items.append(item["order"])
+        return (Counter(items).most_common())
