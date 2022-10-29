@@ -40,6 +40,10 @@ class InventoryControl:
         personal = (Counter(items).most_common())
         for p_order in personal:
             for ingredient in self.INGREDIENTS[p_order[0]]:
-                self._inventory.update({ingredient: p_order[1]})
-
+                new_value = self._inventory[ingredient]
+                self._inventory.update({ingredient: p_order[1] + new_value})
         return self._inventory
+
+
+    def get_available_dishes():
+        pass
